@@ -1,0 +1,36 @@
+<ion-view view-title="Search">
+  <ion-content>
+    <div class="list list-inset">
+      <p>
+        Select Type
+      </p>
+      <ion-list>
+        <ion-radio ng-repeat="type in searchTypeList" ng-model="$parent.searchType" ng-value="type.value">{{ type.text }}</ion-radio>
+      </ion-list>
+    </div>
+
+    <div class="list list-inset">
+      <label class="item item-input">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" placeholder="Search" ng-model="searchFor">
+      </label>
+    </div>
+
+    <div ng-show="isOnline" class="list list-inset">
+      <button ng-click="search(searchType, searchFor)" class="button button-block button-positive">
+        <span ng-show="searching">Loading </span>Search
+      </button>
+    </div>
+
+    <div ng-hide="isOnline" class="list list-inset">
+      <button ng-click="search(searchType, searchFor)" class="button button-block button-assertive">
+        Search
+      </button>
+      <p>Server is offline.</p>
+    </div>
+
+    <div class="list list-inset">
+      <p ng-show="pinging">Pinging server...</p>
+    </div>
+  </ion-content>
+</ion-view>

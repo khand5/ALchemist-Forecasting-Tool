@@ -1,0 +1,21 @@
+<ion-view view-title="Server">
+
+  <ion-content class="padding">
+    <div class="list">
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Status</span><br />
+        <span class="balanced" ng-show="connection">Connected</span>
+        <span class="assertive" ng-show="!connection">Offline</span>
+        <ion-spinner ng-show="pinging" icon="spiral"></ion-spinner>
+      </label>
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Server IP</span>
+        <input type="text" ng-change="changeIP()" ng-model="$parent.serverIP">
+      </label>
+      <button ng-click="ping()" class="button button-block button-positive">
+        Ping
+      </button>
+
+    </div>
+  </ion-content>
+</ion-view>

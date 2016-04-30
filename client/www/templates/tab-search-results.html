@@ -1,0 +1,51 @@
+<ion-view view-title="Search Results">
+  <ion-content>
+    <ion-list>
+
+      <ion-item>
+        {{numberOfGrants}} Search Results.
+      </ion-item>
+
+      <ion-item ng-show="showSeries(0)">
+        <highchart id="chartMap" config="Map1"></highchart>
+      </ion-item>
+
+      <ion-item ng-show="showSeries(1)">
+        <highchart id="chartGrants1" config="Chart1"></highchart>
+      </ion-item>
+      <ion-item ng-show="showSeries(2)">
+        <highchart id="chartGrants2" config="Chart2"></highchart>
+      </ion-item>
+      <ion-item ng-show="showSeries(3)">
+        <highchart id="chartGrants3" config="Chart3"></highchart>
+      </ion-item>
+      <ion-item ng-show="showSeries(4)">
+        <highchart id="chartGrants4" config="Chart4"></highchart>
+      </ion-item>
+      <ion-item ng-show="showSeries(5)">
+        <highchart id="chartGrants5" config="Chart5"></highchart>
+      </ion-item>
+      <ion-item ng-show="showSeries(6)">
+        <highchart id="chartGrants6" config="Chart6"></highchart>
+      </ion-item>
+      <ion-item ng-show="showSeries(7)">
+        <highchart id="chartGrants7" config="Chart7"></highchart>
+      </ion-item>
+      <ion-item ng-show="showSeries(8)">
+        <highchart id="chartGrants8" config="Chart8"></highchart>
+      </ion-item>
+
+      <ion-item class="item-avatar" ng-repeat="grant in grants" type="item-text-wrap">
+        <p><strong>"{{grant.subject}}"</strong></p>
+        <p>({{grant.province}}, {{grant.organizationName}}, {{grant.professorName}})</p>
+        <p>Awarded ${{grant.amount}} for {{grant.field}} in {{grant.year}}</p>
+      </ion-item>
+      <ion-item ng-show="numberOfGrants > 0">
+        <button ng-click="moreGrants()" class="button button-block button-positive">
+          Load More
+        </button>
+      </ion-item>
+
+    </ion-list>
+  </ion-content>
+</ion-view>
