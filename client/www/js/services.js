@@ -1,10 +1,19 @@
+// disable this to turn off log messages
 var DEBUG = true;
 
+/*
+  This is the Services submodule of the main Starter module.
+   - It handles server queries and data management.
+   - It also processes results and readies them for visualization.
+*/
 angular.module('starter.services', [])
 
 .factory('Alchemist', function($http) {
   var root = 'http://localhost:4567'
 
+  /*
+    Server end point functions
+  */
 
   function get(category, search) {
     if(DEBUG) console.log("Requesting \t" + root + '/get/' + category + '/' + search)
@@ -20,6 +29,10 @@ angular.module('starter.services', [])
     if(DEBUG) console.log("Requesting \t" + root + '/api/search/' + searchType + '/' + searchFor + '/generate/' + xColumn + '/' + yColumn)
     return $http.get(root + '/api/search/'+searchType+'/'+searchFor+'/generate/'+xColumn+'/'+yColumn)
   }
+
+  /*
+    Server settings
+  */
 
   function getIP() {
     return root
@@ -42,28 +55,49 @@ angular.module('starter.services', [])
 })
 
 .service('Grants', function(Alchemist) {
+  // the grant data
   var grants = []
+
+  // current search type selected
   var searchType = 'a'
+
+  // current search string
   var searchFor = '10000'
 
+  // processed series data for the visual graphs (could be empty)
   var seriesData = [[], [], [], [], [], [], [], [], []]
 
+  // titles for each visual graph
   var seriesNames = ['', '', '', '', '', '', '', '', '']
 
+  // sets the series data for a specific graph
+  // @param data
+  //    is the data returned by the server, which is an array of objects (shown below)
+  //    [{
+  //      'name': string,
+  //      'data': number[]
+  //    }]
   function setSeriesData(id, data) {
     series[id].series = data
     seriesData[id] = data
   }
 
+  // sets the title for a specific graph
   function setSeriesName(id, name) {
     series[id].title.text = name
     seriesNames[id] = name
   }
 
+  // returns an array of objects, as defined below:
+  //    [{
+  //      'name': string,
+  //      'data': number[]
+  //    }]
   function getSeriesData(id) {
     return seriesData[id];
   }
 
+  // returns the title of a graph
   function getSeriesName(id) {
     return seriesNames[id];
   }
@@ -108,10 +142,12 @@ angular.module('starter.services', [])
     }
   }
 
+  // resets all map data
   function resetMapValues() {
     series[0].series[0]['data'] = data
   }
 
+  // hardcoded map data
   var data = [
     {
         "hc-key": "ca-5682",
@@ -171,7 +207,7 @@ angular.module('starter.services', [])
     }
   ]
 
-
+  // hard coded options for the graphs
   var series = [
     {
       options: {
@@ -347,8 +383,10 @@ angular.module('starter.services', [])
       x: Year             y: Grants, Amount
   */
 
+  // array of booleans pertaining to whether the specific graph should be visible or not
   var showSeries = [false, false, false, false, false, false, false, false, false]
 
+  // clears all graph data and charts
   function resetCharts() {
     showSeries = [false, false, false, false, false, false, false, false, false]
     seriesData = [[], [], [], [], [], [], [], [], []]

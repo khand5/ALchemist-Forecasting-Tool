@@ -28,13 +28,13 @@ public class AlchemistController {
 	 *
 	 * This constructor boots up a RESTful server, which acts as the API
 	 * provider.
-	 * 
+	 *
 	 * The Spark library is used to create the HTTP Server.
 	 */
 	public AlchemistController() {
 		this.model = new AlchemistModel();
 		Gson gson = new Gson();
-		
+
 		// Server port
 		Spark.port(4567);
 
@@ -54,15 +54,26 @@ public class AlchemistController {
 			}
 		});
 
+		/*
+			Sets all requests to use UTF-8
+		*/
 		Spark.before((req, res) -> {
 			res.type("application/json; charset=UTF-8");
 		});
 
+		// compares two sets of data by name
 		Comparator<SeriesData> seriesDataComparator = (sd1, sd2) -> {
 			if(sd1.name.equals("Other")) return Integer.MIN_VALUE;
 			else return -1*sd1.name.compareTo(sd2.name);
 		};
-		
+
+		/**
+		 * GET endpoint which generates a series of data based on the following parameters
+		 *	@param :column one of the columns defined in {@link GrantColumn}
+		 *	@param :object the string/integer to search for in the column
+		 *	@param :x column to use as the x-axis for resulting data
+		 *	@param :y column to use as the y-axis for the resulting data
+		 */
 		Spark.get("/api/search/:column/:object/generate/:x/:y", (req, res) -> {
 			GrantColumn column = GrantColumn.get(req.params(":column").charAt(0));
 			Object searchFor = req.params(":object");
@@ -80,6 +91,11 @@ public class AlchemistController {
 			return gson.toJson(s.data);
 		});
 
+		/**
+		 * GET endpoint which returns all data in a column which match a specific string/integer
+		 *	@param :column the grant column to search in
+		 *	@param :object the string/integer to search for
+		 */
 		Spark.get("/api/get/:column/:object", (req, res) -> {
 			GrantColumn column = GrantColumn.get(req.params(":column").charAt(0));
 			Object searchFor = req.params(":object");
@@ -92,6 +108,10 @@ public class AlchemistController {
 			return "{'error':'Could not get objects.'}";
 		});
 
+		/**
+		 * GET endpoint which returns the string "Success".
+		 *	Can be used as a health check.
+		 */
 		Spark.get("/api/ping", (req, res) -> {
 			System.out.println("Requested Ping.");
 			return gson.toJson("Success");
@@ -101,7 +121,7 @@ public class AlchemistController {
 	public AlchemistModel getModel() {
 		return model;
 	}
-	
+
 	/**
 	 * Program Entry Point
 	 */
@@ -109,5 +129,5 @@ public class AlchemistController {
 		new AlchemistController();
 		System.out.println("=== Server Started ===");
 	}
-	
+
 }
