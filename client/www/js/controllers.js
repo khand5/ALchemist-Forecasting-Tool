@@ -1,7 +1,11 @@
 angular.module('starter.controllers', [])
 
+/*
+  The ServerController is used in the Server tab of the client.
+*/
 .controller('ServerController', function($scope, Alchemist, Grants) {
 
+  // server healthcheck when view is opened
   $scope.$on('$ionicView.beforeEnter', function() {
     $scope.ping()
   })
@@ -27,9 +31,13 @@ angular.module('starter.controllers', [])
 
 })
 
+/*
+  The SearchController is used in the search tab.
+*/
 .controller('SearchController', function($scope, $state, Alchemist, Grants) {
+
+  // reset on page enter & server health check
   $scope.$on('$ionicView.beforeEnter', function() {
-    // reset on page enter
     $scope.searching = false
     $scope.isOnline = false
 
@@ -51,6 +59,7 @@ angular.module('starter.controllers', [])
 
   }
 
+  // hard list of things user can search for
   $scope.searchTypeList = [
     { text: 'Field of Research', value:'f' },
     { text: 'Organization', value:'o' },
@@ -61,7 +70,7 @@ angular.module('starter.controllers', [])
     { text: 'Amount', value:'a' },
   ]
 
-  // default search type
+  // default search type is "Amount"
   $scope.searchType = 'a'
 
   $scope.search = function(category, searchFor) {
@@ -79,7 +88,11 @@ angular.module('starter.controllers', [])
   }
 })
 
+/*
+  The SearchResultsController is used in the results view.
+*/
 .controller('SearchResultsController', function($scope, $interval, Grants, highchartsNG) {
+  // variable which controls number of grants shown
   var numGrants = 5
 
   $scope.$on('$ionicView.beforeEnter', function() {
@@ -87,7 +100,6 @@ angular.module('starter.controllers', [])
     $scope.grants = Grants.getSomeGrants(numGrants);
     numGrants += 5
   })
-
 
   $scope.moreGrants = function() {
     $scope.grants = Grants.getSomeGrants(numGrants)
@@ -98,6 +110,7 @@ angular.module('starter.controllers', [])
     return Grants.showSeries(id)
   }
 
+  // Updates all the charts on the screen to reflect results
   $interval(function() {
     $scope.Chart1 = Grants.getChart(1)
     $scope.Chart2 = Grants.getChart(2)
@@ -109,6 +122,4 @@ angular.module('starter.controllers', [])
     $scope.Chart8 = Grants.getChart(8)
     $scope.Map1 = Grants.getChart(0)
   }, 500)
-
-
 })
